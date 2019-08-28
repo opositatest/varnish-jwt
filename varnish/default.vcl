@@ -9,7 +9,7 @@ import blob;
 include "jwt.vcl";
 
 backend default {
-  .host = "nginx:80";
+  .host = "nginx";
 }
 
 

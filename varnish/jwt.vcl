@@ -1,9 +1,5 @@
 sub vcl_init {
-    new v = crypto.verifier(sha256, {"
------BEGIN PUBLIC KEY-----
-....INSERT YOUR PUBLIC KEY HERE......
------END PUBLIC KEY-----
-"});
+  new v = crypto.verifier(sha256, std.getenv("PUBLIC_KEY"));
 }
 
 sub jwt {

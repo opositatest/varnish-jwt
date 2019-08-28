@@ -53,3 +53,5 @@ RUN cd /usr/local/src/ && \
     cd /usr/local/src && \
     rm -rf libvmod-digest && \
     ldconfig
+
+COPY /varnish/ /etc/varnish/

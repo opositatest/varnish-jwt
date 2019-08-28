@@ -8,11 +8,11 @@ Features:
  - JWT Validation Signature
  - JWT Validation expiration
  - HIT/MISS Header
+ - Use Authorization Bearer header
 
 TODO:
 
  - Testing
- - Parametrice KEYS and algorytm with environment variables
 
 
 Varnish
@@ -25,15 +25,41 @@ https://github.com/varnish/libvmod-digest.git  (Base64 utils)
 https://code.uplex.de/uplex-varnish/libvmod-crypto (RSA algorytm)
 
 
-Install
+Usage with docker-compose
 ---
 
-Modify your jwt.vcl and add your public key.
+Modify docke-compose.yml file
 
 ```
-new v = crypto.verifier(sha256, {"
------BEGIN PUBLIC KEY-----
-....INSERT YOUR PUBLIC KEY HERE......
------END PUBLIC KEY-----
-"});
+version: '3.7'
+services:
+  varnish:
+    image: opositatest/varnish:latest
+    links:
+        - nginx:nginx
+    ports:
+        - 80:80
+    environment:
+        PUBLIC_KEY: |-
+            -----BEGIN PUBLIC KEY-----
+            ...ADD YOUR PUBLIC KEY...
+            -----END PUBLIC KEY-----
 ´´´
+
+Update default.vcl and add your custom host
+
+```
+backend default {
+  .host = "nginx";
+}
+```
+
+
+Notes
+---
+
+This code requires Authorization bearer:
+
+```
+curl -v -H "Authorization: Bearer AWESOME_TOKEN" -X GET "http://localhost:80/api/v1/some_resource" -H  "accept: application/json"
+```
