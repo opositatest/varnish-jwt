@@ -1,7 +1,7 @@
 sub vcl_init {
     new v = crypto.verifier(sha256, {"
 -----BEGIN PUBLIC KEY-----
-....
+....INSERT YOUR PUBLIC KEY HERE......
 -----END PUBLIC KEY-----
 "});
 }
@@ -38,13 +38,10 @@ sub jwt {
             return (synth(401, "Invalid JWT Token: Token expired"));
         }
 
-
         unset req.http.tmpHeader;
         unset req.http.tmpTyp;
         unset req.http.tmpAlg;
         unset req.http.tmpPayload;
         unset req.http.tmpRequestSig;
-        unset req.http.tmpCorrectSig;
-        unset req.http.tmpPayload;
     }
 }
