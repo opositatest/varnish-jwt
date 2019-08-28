@@ -44,7 +44,7 @@ services:
             -----BEGIN PUBLIC KEY-----
             ...ADD YOUR PUBLIC KEY...
             -----END PUBLIC KEY-----
-´´´
+```
 
 Update default.vcl and add your custom host
 
