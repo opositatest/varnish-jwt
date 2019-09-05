@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  varnish:
+    image: opositatest/varnish:latest
+    links:
+        - nginx:nginx
+    ports:
+        - 80:80
+    environment:
+        HOST: "nginx:80"
+        PUBLIC_KEY: |-
+            -----BEGIN PUBLIC KEY-----
+            ...ADD YOUR PUBLIC KEY...
+            -----END PUBLIC KEY-----
