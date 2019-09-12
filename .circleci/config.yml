@@ -4,7 +4,7 @@ jobs:
    machine: true
    steps:
      - checkout
-    - run:
+     - run:
         name: Install Docker Compose
         command: |
           curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
