@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  nginx:
+    image: nginx
+  varnish:
+    build: .
+    command: bash -c 'varnishtest test/*.vtc'
+    links:
+        - nginx:nginx
+    ports:
+        - 80:80
+    environment:
+        HOST: "nginx:80"
+        PUBLIC_KEY: |-
+            -----BEGIN PUBLIC KEY-----
+            MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMWIrilCC8LEAhWwwVmlA7lgSH6VHLOy
+            S9HFjIYiYKo6apbvrqwwOb1nZ1dyrAXgOUKBG8h2iWJWaqDqmoAFRScCAwEAAQ==
+            -----END PUBLIC KEY-----
