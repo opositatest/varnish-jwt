@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/opositatest/varnish-jwt.svg?style=svg)](https://circleci.com/gh/opositatest/varnish-jwt)
+
 
 This code is based in https://feryn.eu/blog/validating-json-web-tokens-in-varnish/
 
