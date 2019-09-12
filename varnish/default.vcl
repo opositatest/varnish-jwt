@@ -28,11 +28,7 @@ sub vcl_recv {
 
   if (req.http.cache-control ~ "(no-cache|private)" ||
       req.http.pragma ~ "no-cache") {
-         return (pass);
-  }
-
-  if (req.method != "GET" && req.method != "HEAD") {
-    return (pass);
+         return (pipe);
   }
 
   call jwt;

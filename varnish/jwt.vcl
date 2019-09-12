@@ -15,7 +15,7 @@ sub jwt {
             return(synth(401, "Invalid JWT Token: Token is not a JWT: " + req.http.tmpHeader));
         }
         if(req.http.tmpAlg != "RS256") {
-            return(synth(401, "Invalid JWT Token: Token does not use HS256 hashing"));
+            return(synth(401, "Invalid JWT Token: Token does not use RS256 hashing"));
         }
 
         set req.http.tmpPayload = regsub(req.http.x-token,"[^\.]+\.([^\.]+)\.[^\.]+$","\1");
