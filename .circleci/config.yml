@@ -1,0 +1,18 @@
+version: 2
+jobs:
+ build:
+   machine: true
+   steps:
+     - checkout
+    - run:
+        name: Install Docker Compose
+        command: |
+          curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+          chmod +x ~/docker-compose
+          sudo mv ~/docker-compose /usr/local/bin/docker-compose
+
+     # build the application image
+     - run: docker-compose build
+
+     # run test
+     - run: docker-compose -f docker-compose.test.yml up
