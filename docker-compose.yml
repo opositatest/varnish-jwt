@@ -1,3 +1,7 @@
+version: '3.3'
+services:
+  nginx:
+    image: nginx
   varnish:
     build: .
     links:
