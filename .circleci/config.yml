@@ -12,7 +12,7 @@ jobs:
           sudo mv ~/docker-compose /usr/local/bin/docker-compose
 
      # build the application image
-     - run: docker-compose build
+     - run: docker-compose -f docker-compose.test.yml build
 
      # run test
      - run: docker-compose -f docker-compose.test.yml up
