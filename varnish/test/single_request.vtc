@@ -1,0 +1,37 @@
+varnishtest "test jwt"
+
+server s1 {
+	rxreq
+	txresp
+} -start
+
+
+varnish v1 -vcl+backend {
+
+		import std;
+		import digest;
+		import crypto;
+		import blob;
+
+		include "jwt.vcl";
+
+		sub vcl_recv {
+
+		  if (req.method != "GET" && req.method != "HEAD") {
+		    return (pass);
+		  }
+
+		  call jwt;
+
+		  return (hash);
+		}
+
+
+} -start
+
+client c1 {
+  txreq
+  rxresp
+	expect resp.status == 200
+
+} -run

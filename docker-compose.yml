@@ -1,7 +1,9 @@
-version: '3.7'
+version: '3.3'
 services:
+  nginx:
+    image: nginx
   varnish:
-    image: opositatest/varnish:latest
+    build: .
     links:
         - nginx:nginx
     ports:
@@ -10,5 +12,5 @@ services:
         HOST: "nginx:80"
         PUBLIC_KEY: |-
             -----BEGIN PUBLIC KEY-----
-            ...ADD YOUR PUBLIC KEY...
+            ADD YOUR PUBLIC KEY
             -----END PUBLIC KEY-----

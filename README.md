@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/opositatest/varnish-jwt.svg?style=svg)](https://circleci.com/gh/opositatest/varnish-jwt)
+
 
 This code is based in https://feryn.eu/blog/validating-json-web-tokens-in-varnish/
 
@@ -9,11 +11,6 @@ Features:
  - JWT Validation expiration
  - HIT/MISS Header
  - Use Authorization Bearer header
-
-TODO:
-
- - Testing
-
 
 Varnish
 ---
@@ -62,4 +59,12 @@ This code requires Authorization bearer:
 
 ```
 curl -v -H "Authorization: Bearer AWESOME_TOKEN" -X GET "http://localhost:80/api/v1/some_resource" -H  "accept: application/json"
+```
+
+
+Test
+---
+
+```
+docker-compose -f docker-compose.test.yml up
 ```
