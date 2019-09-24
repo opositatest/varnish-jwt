@@ -39,5 +39,7 @@ sub jwt {
         unset req.http.tmpAlg;
         unset req.http.tmpPayload;
         unset req.http.tmpRequestSig;
+
+        return (hash);
     }
 }

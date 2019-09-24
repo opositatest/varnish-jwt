@@ -36,8 +36,6 @@ sub vcl_recv {
   }
 
   call jwt;
-
-  return (hash);
 }
 
 sub vcl_hit {

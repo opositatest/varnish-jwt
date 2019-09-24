@@ -1,8 +1,12 @@
 version: '3.3'
 services:
+  nginx:
+    image: nginx:latest
   sut:
     build: .
     command: bash -c 'varnishtest test/*.vtc'
+    links:
+        - nginx:nginx
     environment:
         HOST: "nginx:80"
         PUBLIC_KEY: |-
