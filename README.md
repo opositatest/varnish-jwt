@@ -5,12 +5,17 @@ This code is based in https://feryn.eu/blog/validating-json-web-tokens-in-varnis
 
 This code provides asymectric jwt validation RS256 instead symmetric HS256  
 
-Features:
+*Features:*
 
  - JWT Validation Signature
  - JWT Validation expiration
  - HIT/MISS Header
  - Use Authorization Bearer header
+
+*Todo*
+  - Allow multiple jwt validation algorithms
+  - Improve documentation
+  - Improve test
 
 Varnish
 ---
@@ -66,5 +71,5 @@ Test
 ---
 
 ```
-docker-compose -f docker-compose.test.yml up
+docker-compose -f docker-compose.test.yml up --abort-on-container-exit
 ```
