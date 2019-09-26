@@ -1,4 +1,4 @@
-varnishtest "test jwt"
+varnishtest "single request"
 
 server s1 {
 	rxreq
@@ -6,26 +6,9 @@ server s1 {
 } -start
 
 
-varnish v1 -vcl+backend {
+varnish v1 -vcl {
 
-		import std;
-		import digest;
-		import crypto;
-		import blob;
-
-		include "jwt.vcl";
-
-		sub vcl_recv {
-
-		  if (req.method != "GET" && req.method != "HEAD") {
-		    return (pass);
-		  }
-
-		  call jwt;
-
-		  return (hash);
-		}
-
+include "/etc/varnish/default.vcl";
 
 } -start
 
