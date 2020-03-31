@@ -1,4 +1,4 @@
-FROM varnish:6.2
+FROM varnish:6.4
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
@@ -41,12 +41,10 @@ RUN cd /usr/local/src/ && \
 # install libvmod-digest
 #
 ENV LIBVMOD_DIGEST_BRANCH=master
-ENV LIBVMOD_DIGEST_COMMIT=c42b9fa62a4fba2d861d87b9699d9f591198249c
 
 RUN cd /usr/local/src/ && \
     git clone -b ${LIBVMOD_DIGEST_BRANCH} https://github.com/varnish/libvmod-digest.git && \
     cd libvmod-digest && \
-    git reset --hard ${LIBVMOD_DIGEST_COMMIT} && \
     ./autogen.sh && \
     ./configure && \
     make install && \
