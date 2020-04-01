@@ -109,7 +109,7 @@ sub vcl_backend_response {
 
 sub vcl_synth {
     set resp.http.Content-Type = "application/json";
-    synthetic( {"{ "code":"} + resp.status + {" "message": ""} + resp.reason + {"" }"} );
+    synthetic( {"{ "code":"} + resp.status + {", "message": ""} + resp.reason + {"" }"} );
 
     return (deliver);
 }
