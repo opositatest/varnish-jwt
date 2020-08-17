@@ -109,6 +109,9 @@ sub vcl_backend_response {
 
 sub vcl_synth {
     set resp.http.Content-Type = "application/json";
+    set resp.http.Access-Control-Allow-Origin = "*";
+    set resp.http.Access-Control-Allow-Credentials = "true";
+    
     synthetic( {"{ "code":"} + resp.status + {", "message": ""} + resp.reason + {"" }"} );
 
     return (deliver);
