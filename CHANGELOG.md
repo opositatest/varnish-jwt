@@ -1,3 +1,6 @@
+* v1.0.2
+	* #9 Add CORS to public api for all responses.	
+
 * v1.0.1
 	* #8 FIX CORS in a non valid jwt request.	
 
