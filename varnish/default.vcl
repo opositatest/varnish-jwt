@@ -20,6 +20,7 @@ sub vcl_recv {
   # Remove the "Forwarded" HTTP header if exists (security)
   unset req.http.forwarded;
 
+  #bypass cache when no-cache or private header is present
   if (req.http.cache-control ~ "(no-cache|private)" ||
       req.http.pragma ~ "no-cache") {
          return (pass);
@@ -95,6 +96,19 @@ sub vcl_deliver {
           set resp.http.X-Cache = "HIT";
   } else {
           set resp.http.X-Cache = "MISS";
+  }
+
+  # For private api, change this sentence with:
+  # if (req.http.Origin == "https://www.example.com" ...
+  if (req.http.Origin) {
+    set resp.http.Access-Control-Allow-Origin = req.http.Origin;
+    set resp.http.Access-Control-Allow-Credentials = "true";
+  }
+
+  if (resp.http.Vary) {
+    set resp.http.Vary = resp.http.Vary + ",Origin";
+  } else {
+    set resp.http.Vary = "Origin";
   }
 }
 

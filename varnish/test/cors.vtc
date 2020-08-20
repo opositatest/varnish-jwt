@@ -1,0 +1,41 @@
+varnishtest "test jwt authorization"
+
+server s1 {
+	rxreq
+
+	txresp
+} -start
+
+
+varnish v1 -vcl {
+
+		include "/etc/varnish/default.vcl";
+
+} -start
+
+client c1 {
+  txreq -url / \
+      -hdr "Origin: https://awesome.example.com" \
+      -hdr "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlIjoiOkJERTEwMDAzNTE6IiwiZXhwIjoyMDM0NDMyMzYyLCJzdWIiOiJodHRwX3Rlc3QifQ.rsJrHXD0LIH-rt1_kicGb6xAJK0-zLAQ-kRJfAYQNivOcIrpqIugjmmoDm2f-tGjcu5n7PrcYm4HHIN3X_mLZw"
+  rxresp
+	expect resp.status == 200
+  expect resp.http.Access-Control-Allow-Origin ~ "https://awesome.example.com"
+
+  txreq -url / \
+      -hdr "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlIjoiOkJERTEwMDAzNTE6IiwiZXhwIjoyMDM0NDMyMzYyLCJzdWIiOiJodHRwX3Rlc3QifQ.rsJrHXD0LIH-rt1_kicGb6xAJK0-zLAQ-kRJfAYQNivOcIrpqIugjmmoDm2f-tGjcu5n7PrcYm4HHIN3X_mLZw"
+  rxresp
+	expect resp.status == 200
+  expect resp.http.Access-Control-Allow-Origin !~ "http"
+
+
+   #You might have noticed that Vary is still set, but in this case we’re setting it on resp, not on beresp. This is to make sure that any caches between your Varnish and the browser, which you have no control over, still do the right thing, which is to cache the response, but still serve different variations based on the Origin header.
+   # Source: https://www.fastly.com/blog/caching-cors
+
+  txreq -url / \
+      -hdr "Origin: https://awesome.example.com" \
+      -hdr "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlIjoiOkJERTEwMDAzNTE6IiwiZXhwIjoyMDM0NDMyMzYyLCJzdWIiOiJodHRwX3Rlc3QifQ.rsJrHXD0LIH-rt1_kicGb6xAJK0-zLAQ-kRJfAYQNivOcIrpqIugjmmoDm2f-tGjcu5n7PrcYm4HHIN3X_mLZw"
+  rxresp
+	expect resp.status == 200
+  expect resp.http.Vary ~ "Origin"
+
+} -run
