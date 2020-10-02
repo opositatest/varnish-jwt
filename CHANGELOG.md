@@ -1,3 +1,6 @@
+* v1.0.3
+	* #11 Fix invalid token response when request is restart
+
 * v1.0.2
 	* #9 Add CORS to public api for all responses.	
 
