@@ -29,7 +29,7 @@ https://code.uplex.de/uplex-varnish/libvmod-crypto (RSA algorytm)
 Usage with docker-compose
 ---
 
-Modify docke-compose.yml file
+Modify docker-compose.yml file
 
 ```
 version: '3.7'
