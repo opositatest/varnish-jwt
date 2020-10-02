@@ -48,6 +48,7 @@ sub vcl_recv {
       set req.http.tmpPayload = regsub(req.http.x-token,"[^\.]+\.([^\.]+)\.[^\.]+$","\1");
       set req.http.tmpRequestSig = regsub(req.http.x-token,"^[^\.]+\.[^\.]+\.([^\.]+)$","\1");
 
+      v.reset();  // need this if request restart
       v.update(req.http.tmpHeader + "." + req.http.tmpPayload );
 
 
