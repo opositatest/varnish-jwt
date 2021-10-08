@@ -1,5 +1,4 @@
-[![CircleCI](https://circleci.com/gh/opositatest/varnish-jwt.svg?style=svg)](https://circleci.com/gh/opositatest/varnish-jwt)
-
+![Github Actions](https://github.com/opositatest/varnish-jwt/actions/workflows/test.yml/badge.svg?branch=main)
 
 This code is based in https://feryn.eu/blog/validating-json-web-tokens-in-varnish/
 
