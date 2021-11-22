@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python3-docutils \
     python3-sphinx \
-    varnish-dev \
+    varnish-dev=6.5.1~buster-1 \
     libssl-dev \
     && apt-get clean \
     && apt-get autoremove -y \
