@@ -1,4 +1,4 @@
-FROM varnish:6.4
+FROM varnish:6.5.1
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
@@ -17,13 +17,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python3-docutils \
     python3-sphinx \
-    varnish-dev \
+    varnish-dev=6.5.1~buster-1 \
     libssl-dev \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
-ENV LIBVMOD_CRYPTO_VERSION=6.2
+ENV LIBVMOD_CRYPTO_VERSION=6.5
 
 RUN cd /usr/local/src/ && \
     curl -sfLO https://code.uplex.de/uplex-varnish/libvmod-crypto/-/archive/${LIBVMOD_CRYPTO_VERSION}/libvmod-crypto-${LIBVMOD_CRYPTO_VERSION}.tar.gz && \
@@ -40,7 +40,7 @@ RUN cd /usr/local/src/ && \
 #
 # install libvmod-digest
 #
-ENV LIBVMOD_DIGEST_BRANCH=master
+ENV LIBVMOD_DIGEST_BRANCH=6.5
 
 RUN cd /usr/local/src/ && \
     git clone -b ${LIBVMOD_DIGEST_BRANCH} https://github.com/varnish/libvmod-digest.git && \
