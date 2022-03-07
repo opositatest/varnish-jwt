@@ -1,3 +1,9 @@
+* v1.0.5
+	* Add environment variable to disable cache [#18](https://github.com/opositatest/varnish-jwt/pull/18)
+	
+* v1.0.4
+	* Upgrade Varnish to 6.5.1
+
 * v1.0.3
 	* #11 Fix invalid token response when request is restart
 
