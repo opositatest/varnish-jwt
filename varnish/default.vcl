@@ -20,6 +20,10 @@ sub vcl_recv {
   # Remove the "Forwarded" HTTP header if exists (security)
   unset req.http.forwarded;
 
+  if (std.getenv("DISABLE_CACHE") ~ "yes") {
+    return (pass);
+  }
+
   #bypass cache when no-cache or private header is present
   if (req.http.cache-control ~ "(no-cache|private)" ||
       req.http.pragma ~ "no-cache") {
