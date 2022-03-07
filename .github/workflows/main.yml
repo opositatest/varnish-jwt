@@ -1,15 +1,15 @@
 name: CICD
 on:
   push:
-    tags:
-      - '*'
+    tags: ['*']
+    branches: [ "main" ]
   workflow_dispatch:
 env:
-      DOCKERHUB_REPOSITORY: opositatest/varnish-jwt
-      ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    DOCKERHUB_REPOSITORY: opositatest/varnish-jwt
+    ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+    AWS_REGION: ${{ secrets.AWS_REGION }}
+    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
   test:
@@ -32,19 +32,22 @@ jobs:
       id: get_version
       run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
 
-    - name: Build, tag and push image to Dockerhub
-      env:
-        VERSION: ${{ steps.get_version.outputs.version }}
-      run: |
-        docker build -t ${DOCKERHUB_REPOSITORY}:${VERSION} .
-        docker push ${DOCKERHUB_REPOSITORY}:${VERSION}
-    
+    - name: Check if latest
+      id: latest
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: echo ::set-output name=latest::true
+
     - uses: aws-actions/amazon-ecr-login@v1
       id: login-ecr
-    - name: Build, tag and push image to Amazon ECR
+
+    - name: Build, tag and push image to Docker Hub and ECR
       env:
+        LATEST: ${{ steps.latest.outputs.latest }}
         VERSION: ${{ steps.get_version.outputs.version }}
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        docker build -t ${ECR_REGISTRY}/${ECR_REPOSITORY}:${VERSION} .
-        docker push ${ECR_REGISTRY}/${ECR_REPOSITORY}:${VERSION}
+        [[ ${LATEST} == "true" ]] && version="latest" || version=${VERSION}
+        docker build -t ${DOCKERHUB_REPOSITORY}:${version} .
+        docker tag ${DOCKERHUB_REPOSITORY}:${version} ${ECR_REGISTRY}/${ECR_REPOSITORY}:${version}
+        docker push ${DOCKERHUB_REPOSITORY}:${version}
+        docker push ${ECR_REGISTRY}/${ECR_REPOSITORY}:${version}
