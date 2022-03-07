@@ -9,6 +9,7 @@ services:
         - nginx:nginx
     environment:
         HOST: "nginx:80"
+        DISABLE_CACHE: "no"
         PUBLIC_KEY: |-
             -----BEGIN PUBLIC KEY-----
             MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMWIrilCC8LEAhWwwVmlA7lgSH6VHLOy
