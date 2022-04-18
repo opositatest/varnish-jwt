@@ -36,20 +36,4 @@ RUN cd /usr/local/src/ && \
     rm -rf libvmod-crypto* && \
     ldconfig
 
-
-#
-# install libvmod-digest
-#
-ENV LIBVMOD_DIGEST_BRANCH=6.5
-
-RUN cd /usr/local/src/ && \
-    git clone -b ${LIBVMOD_DIGEST_BRANCH} https://github.com/varnish/libvmod-digest.git && \
-    cd libvmod-digest && \
-    ./autogen.sh && \
-    ./configure && \
-    make install && \
-    cd /usr/local/src && \
-    rm -rf libvmod-digest && \
-    ldconfig
-
 COPY /varnish/ /etc/varnish/
