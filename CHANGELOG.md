@@ -1,6 +1,9 @@
+* v1.0.6
+	* Remove libmov-digest dependency [#19](https://github.com/opositatest/varnish-jwt/pull/19)
+
 * v1.0.5
 	* Add environment variable to disable cache [#18](https://github.com/opositatest/varnish-jwt/pull/18)
-	
+
 * v1.0.4
 	* Upgrade Varnish to 6.5.1
 

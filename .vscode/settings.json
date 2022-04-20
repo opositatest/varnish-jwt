@@ -1,0 +1,8 @@
+{
+    "yaml.schemas": {
+        "file:///home/adan/.config/Code/User/globalStorage/amazonwebservices.aws-toolkit-vscode/sam.schema.json": [
+            "template.yaml"
+        ],
+        "https://json.schemastore.org/github-workflow.json": "file:///home/adan/Projects/varnish-jwt/.github/workflows/main.yml"
+    }
+}
