@@ -1,7 +1,6 @@
 vcl 4.0;
 
 import std;
-import digest;
 import crypto;
 import blob;
 
@@ -37,9 +36,14 @@ sub vcl_recv {
   if(req.http.Authorization && req.http.Authorization ~ "Bearer") {
       set req.http.x-token =  regsuball(req.http.Authorization, "Bearer ", "");
 
+
+
       set req.http.tmpHeader = regsub(req.http.x-token,"([^\.]+)\.[^\.]+\.[^\.]+","\1");
-      set req.http.tmpTyp = regsub(digest.base64_decode(req.http.tmpHeader),{"^.*?"typ"\s*:\s*"(\w+)".*?$"},"\1");
-      set req.http.tmpAlg = regsub(digest.base64_decode(req.http.tmpHeader),{"^.*?"alg"\s*:\s*"(\w+)".*?$"},"\1");
+      set req.http.tmpHeaderDecoded = blob.transcode(decoding=BASE64, encoded=req.http.tmpHeader);
+
+
+      set req.http.tmpTyp = regsub(req.http.tmpHeaderDecoded,{"^.*?"typ"\s*:\s*"(\w+)".*?$"},"\1");
+      set req.http.tmpAlg = regsub(req.http.tmpHeaderDecoded,{"^.*?"alg"\s*:\s*"(\w+)".*?$"},"\1");
 
 
       if(req.http.tmpTyp != "JWT") {
@@ -60,16 +64,19 @@ sub vcl_recv {
           return (synth(401, "Invalid JWT Token: Signature"));
       }
 
-      set req.http.X-Expiration = regsub(digest.base64_decode(req.http.tmpPayload), {"^.*?"exp":([0-9]+).*?$"},"\1");
+      set req.http.tmpPayloadDecoded = blob.transcode(decoding=BASE64, encoded=req.http.tmpPayload);
+      set req.http.X-Expiration = regsub(req.http.tmpPayloadDecoded, {"^.*?"exp":([0-9]+).*?$"},"\1");
 
       if (std.integer(req.http.X-Expiration, 0) <  std.time2integer(now, 0)) {
           return (synth(401, "Invalid JWT Token: Token expired"));
       }
 
       unset req.http.tmpHeader;
+      unset req.http.tmpHeaderDecoded;
       unset req.http.tmpTyp;
       unset req.http.tmpAlg;
       unset req.http.tmpPayload;
+      unset req.http.tmpPayloadDecoded;
       unset req.http.tmpRequestSig;
 
       return (hash);
