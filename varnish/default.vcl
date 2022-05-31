@@ -62,7 +62,7 @@ sub vcl_recv {
           return (synth(401, "Invalid JWT Token: Signature"));
       }
       
-      set req.http.tmpPayloadDecoded = blob.transcode(decoding=BASE64, encoded=req.http.tmpPayload);
+      set req.http.tmpPayloadDecoded = blob.transcode(decoding=BASE64URLNOPAD, encoded=req.http.tmpPayload);
       set req.http.X-Expiration = regsub(req.http.tmpPayloadDecoded, {"^.*?"exp":([0-9]+).*?$"},"\1");
 
       if (std.integer(req.http.X-Expiration, 0) <  std.time2integer(now, 0)) {
