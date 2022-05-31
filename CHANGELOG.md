@@ -1,3 +1,6 @@
+* v1.0.7
+	* Fix payload decode [#20](https://github.com/opositatest/varnish-jwt/pull/20)
+
 * v1.0.6
 	* Remove libmov-digest dependency [#19](https://github.com/opositatest/varnish-jwt/pull/19)
 

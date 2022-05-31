@@ -36,9 +36,7 @@ sub vcl_recv {
   if(req.http.Authorization && req.http.Authorization ~ "Bearer") {
       set req.http.x-token =  regsuball(req.http.Authorization, "Bearer ", "");
 
-
-
-      set req.http.tmpHeader = regsub(req.http.x-token,"([^\.]+)\.[^\.]+\.[^\.]+","\1");
+      set req.http.tmpHeader = regsub(req.http.x-token,"([^\.]+)(.*)","\1");
       set req.http.tmpHeaderDecoded = blob.transcode(decoding=BASE64, encoded=req.http.tmpHeader);
 
 
@@ -53,7 +51,7 @@ sub vcl_recv {
           return(synth(401, "Invalid JWT Token: Token does not use RS256 hashing"));
       }
 
-      set req.http.tmpPayload = regsub(req.http.x-token,"[^\.]+\.([^\.]+)\.[^\.]+$","\1");
+      set req.http.tmpPayload = regsub(req.http.x-token,"([^\.]+)\.([^\.]+)\.(.*)","\2");
       set req.http.tmpRequestSig = regsub(req.http.x-token,"^[^\.]+\.[^\.]+\.([^\.]+)$","\1");
 
       v.reset();  // need this if request restart
@@ -63,8 +61,8 @@ sub vcl_recv {
       if (! v.valid( blob.decode(BASE64URLNOPAD, encoded=req.http.tmpRequestSig))) {
           return (synth(401, "Invalid JWT Token: Signature"));
       }
-
-      set req.http.tmpPayloadDecoded = blob.transcode(decoding=BASE64, encoded=req.http.tmpPayload);
+      
+      set req.http.tmpPayloadDecoded = blob.transcode(decoding=BASE64URLNOPAD, encoded=req.http.tmpPayload);
       set req.http.X-Expiration = regsub(req.http.tmpPayloadDecoded, {"^.*?"exp":([0-9]+).*?$"},"\1");
 
       if (std.integer(req.http.X-Expiration, 0) <  std.time2integer(now, 0)) {
