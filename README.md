@@ -10,6 +10,7 @@ This code provides asymectric jwt validation RS256 instead symmetric HS256
  - JWT Validation expiration
  - HIT/MISS Header
  - Use Authorization Bearer header
+ - Support multiple keys
 
 *Todo*
   - Allow multiple jwt validation algorithms
@@ -19,8 +20,6 @@ Varnish
 ---
 
 This image use this modules:
-
-https://github.com/varnish/libvmod-digest.git  (Base64 utils)
 
 https://code.uplex.de/uplex-varnish/libvmod-crypto (RSA algorytm)
 

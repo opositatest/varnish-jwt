@@ -1,0 +1,24 @@
+varnishtest "test jwt authorization"
+
+server s1 {
+	rxreq
+
+	txresp
+} -start
+
+
+varnish v1 -vcl {
+
+		include "/etc/varnish/default.vcl";
+
+} -start
+
+client c1 {
+  #check additional jwt public key
+  txreq -url / \
+        -hdr "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImV4cCI6MjkxNjIzOTAyMiwiaWF0IjoxNTE2MjM5MDIyfQ.RHYckpubFt9zziZYiNN9sTWaG7UsvD16mq4UmVDXO39SA9JiAIUMOn09iJsiN4lgMIdXjAgkvSBu9OgGPgfY5acIZK6rjgDNJbyYFIWNW0h0DDOyqXSq7a2zAN9ytACppByjLoriuk8FkX12JYLdjsy2_qdv32PsLKoSySDs8T5MMUwVm9EOHjUuO71pOC28cgAWVCARkGiMp-8ZMERCOyTOPZKuBl4_aD_-jBuLl3lXVkmUB5O7aRCD3ZZLdW3-4TJgJBXXCVNpjGJnrV1h0PZkm49YY0t8JfZgKthWFmktcCubGM4H5tVGMeFV3ZyxLLex2AhjYrFeRBoU1r6zmaa7eBZHMj6uOzZ4Cd2N8PRc5uKdqfKB5kI0sCtC4CgfW_L6F1Cs_y1vQnUw7x-DcMUcCrgGQCBMX1MH-drof97PZWEFYkzfwQvSCCYSKVl2_Pv0wDJgBKWzRthvsFY2WS3w30Z1PDHGqf_m62BXos70Po4yguY4v40CJ5MoPCdIeZjfnHPfhyngdGurZghDMVR9kmLuixuLiQT1_k6mdGhsOCYvoHwZEYzbzLfnMzV_0Cd5y-LT3elZ5tdCi5q9BPpdEdf7t8ApAXnL2tklj4PqiyOSZ0GxArESy5JMLj8yiDVuE1FscIcHicfJ1SqudN8augnXbIs2-ZE-xDTJciU"
+  rxresp
+	expect resp.status == 200
+
+
+} -run

@@ -7,6 +7,7 @@ import blob;
 
 sub vcl_init {
   new v = crypto.verifier(sha256, std.getenv("PUBLIC_KEY"));
+  new v2 = crypto.verifier(sha256, std.getenv("ADDITIONAL_PUBLIC_KEY"));
 }
 
 
@@ -57,9 +58,13 @@ sub vcl_recv {
       v.reset();  // need this if request restart
       v.update(req.http.tmpHeader + "." + req.http.tmpPayload );
 
-
       if (! v.valid( blob.decode(BASE64URLNOPAD, encoded=req.http.tmpRequestSig))) {
+        v2.reset();  // need this if request restart
+        v2.update(req.http.tmpHeader + "." + req.http.tmpPayload );
+        
+        if (! v2.valid( blob.decode(BASE64URLNOPAD, encoded=req.http.tmpRequestSig))) {
           return (synth(401, "Invalid JWT Token: Signature"));
+        }
       }
       
       set req.http.tmpPayloadDecoded = blob.transcode(decoding=BASE64URLNOPAD, encoded=req.http.tmpPayload);
