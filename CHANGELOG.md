@@ -1,3 +1,6 @@
+* v1.0.8
+	* Add support to second public key [#21](https://github.com/opositatest/varnish-jwt/pull/21)
+
 * v1.0.7
 	* Fix payload decode [#20](https://github.com/opositatest/varnish-jwt/pull/20)
 
