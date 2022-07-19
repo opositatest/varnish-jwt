@@ -37,3 +37,5 @@ RUN cd /usr/local/src/ && \
     ldconfig
 
 COPY /varnish/ /etc/varnish/
+
+COPY docker-varnish-entrypoint /usr/local/bin/

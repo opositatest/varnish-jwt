@@ -14,3 +14,7 @@ services:
             -----BEGIN PUBLIC KEY-----
             ADD YOUR PUBLIC KEY
             -----END PUBLIC KEY-----
+        ADDITIONAL_PUBLIC_KEY: |-
+            -----BEGIN PUBLIC KEY-----
+            SECUNDARY PUBLIC KEY
+            -----END PUBLIC KEY-----
