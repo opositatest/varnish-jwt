@@ -112,12 +112,6 @@ sub vcl_deliver {
   } else {
           set resp.http.X-Cache = "MISS";
   }
-  
-  if (resp.http.Vary) {
-    set resp.http.Vary = resp.http.Vary + ",Origin";
-  } else {
-    set resp.http.Vary = "Origin";
-  }
 }
 
 sub vcl_backend_response {
@@ -126,8 +120,13 @@ sub vcl_backend_response {
 
   # Add a grace in case the backend is down
   set beresp.grace = 1h;
-}
 
+  if (beresp.http.Vary) {
+    set beresp.http.Vary = beresp.http.Vary + ",Origin";
+  } else {
+    set beresp.http.Vary = "Origin";
+  }
+}
 
 sub vcl_synth {
     set resp.http.Content-Type = "application/json";
