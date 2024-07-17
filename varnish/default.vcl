@@ -112,6 +112,12 @@ sub vcl_deliver {
   } else {
           set resp.http.X-Cache = "MISS";
   }
+  
+  if (resp.http.Vary) {
+    set resp.http.Vary = resp.http.Vary + ",Origin";
+  } else {
+    set resp.http.Vary = "Origin";
+  }
 }
 
 sub vcl_backend_response {
