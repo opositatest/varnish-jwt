@@ -12,7 +12,7 @@ env:
     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
-  test:
+  main:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

@@ -1,3 +1,9 @@
+* v1.1.10
+	* Add Origin header in Vary to solve issues with same requests for different origins
+
+* v1.0.9
+	* Remove cors manage in Varnish and delegate it to backend web server
+
 * v1.0.8
 	* Add support to second public key [#21](https://github.com/opositatest/varnish-jwt/pull/21)
 
