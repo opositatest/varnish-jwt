@@ -16,6 +16,6 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
     - name: Build
-      run: docker-compose -f docker-compose.test.yml build
+      run: docker compose -f docker-compose.test.yml build
     - name: Run test
-      run: docker-compose -f docker-compose.test.yml up --abort-on-container-exit
+      run: docker compose -f docker-compose.test.yml up --abort-on-container-exit

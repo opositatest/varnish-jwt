@@ -34,6 +34,10 @@ sub vcl_recv {
     return (pass);
   }
 
+  if(!req.http.Authorization) {
+    return (pass);
+  }
+
   if(req.http.Authorization && req.http.Authorization ~ "Bearer") {
       set req.http.x-token =  regsuball(req.http.Authorization, "Bearer ", "");
 
