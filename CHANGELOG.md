@@ -1,3 +1,6 @@
+* v1.1.11
+	* fix: pass request to backend if no authorization header is set [#25](https://github.com/opositatest/varnish-jwt/pull/25)
+
 * v1.1.10
 	* Add Origin header in Vary to solve issues with same requests for different origins
 
