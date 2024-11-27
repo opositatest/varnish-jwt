@@ -123,7 +123,7 @@ sub vcl_backend_response {
   set beresp.http.url = bereq.url;
 
   # Add a grace in case the backend is down
-  set beresp.grace = 1h;
+  set beresp.grace = 10s;
 
   if (beresp.http.Vary) {
     set beresp.http.Vary = beresp.http.Vary + ",Origin";
