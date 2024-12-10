@@ -122,7 +122,7 @@ sub vcl_backend_response {
   # Ban lurker friendly header
   set beresp.http.url = bereq.url;
 
-  # Add a grace to increase performance
+  # Add a small grace time to increase performance
   set beresp.grace = 10s;
 
   if (beresp.http.Vary) {
