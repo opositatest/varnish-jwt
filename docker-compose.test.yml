@@ -4,6 +4,7 @@ services:
     image: nginx:latest
   sut:
     build: .
+    user: root:root
     command: bash -c 'varnishtest test/*.vtc && bash test/test.sh'
     links:
         - nginx:nginx

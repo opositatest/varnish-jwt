@@ -1,3 +1,6 @@
+* v1.1.12
+	* Change default grace preriod [#26](https://github.com/opositatest/varnish-jwt/pull/26)
+
 * v1.1.11
 	* fix: pass request to backend if no authorization header is set [#25](https://github.com/opositatest/varnish-jwt/pull/25)
 

@@ -1,4 +1,6 @@
-FROM varnish:6.5.1
+FROM varnish:7.6
+
+USER root
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
@@ -17,13 +19,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python3-docutils \
     python3-sphinx \
-    varnish-dev=6.5.1~buster-1 \
+    varnish-dev \
     libssl-dev \
     && apt-get clean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
-ENV LIBVMOD_CRYPTO_VERSION=6.5
+ENV LIBVMOD_CRYPTO_VERSION=master
 
 RUN cd /usr/local/src/ && \
     curl -sfLO https://code.uplex.de/uplex-varnish/libvmod-crypto/-/archive/${LIBVMOD_CRYPTO_VERSION}/libvmod-crypto-${LIBVMOD_CRYPTO_VERSION}.tar.gz && \
@@ -39,3 +41,5 @@ RUN cd /usr/local/src/ && \
 COPY /varnish/ /etc/varnish/
 
 COPY docker-varnish-entrypoint /usr/local/bin/
+
+USER varnish
