@@ -1,7 +1,7 @@
 name: CICD
 on:
   push:
-    tags: ['*']
+    tags: ["*"]
     branches: [ "main" ]
   workflow_dispatch:
 env:
@@ -12,42 +12,81 @@ env:
     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
-  main:
-    runs-on: ubuntu-latest
+  test:
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
+  build:
+    needs: test
+    name: ${{ matrix.os }}, ${{ matrix.arch }}
+    runs-on: [ "${{ matrix.os }}-${{ matrix.arch }}" ]
     timeout-minutes: 20
+    strategy:
+      matrix:
+        os: [ ubuntu-24.04 ]
+        arch: [ amd64, arm64 ]
+
     steps:
-    - uses: actions/checkout@v2
-    
-    - uses: docker/login-action@v1
+    - uses: actions/checkout@v4
+
+    - uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
-  
-    - name: Build
-      run: docker compose -f docker-compose.test.yml build
-    - name: Run test
-      run: docker compose -f docker-compose.test.yml up --abort-on-container-exit
 
     - name: Get the version
       id: get_version
-      run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+      run: echo "version=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
 
     - name: Check if latest
       id: latest
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: echo ::set-output name=latest::true
+      run: echo "version=latest" >> $GITHUB_ENV
 
     - uses: aws-actions/amazon-ecr-login@v1
       id: login-ecr
 
     - name: Build, tag and push image to Docker Hub and ECR
+      id: build
       env:
-        LATEST: ${{ steps.latest.outputs.latest }}
-        VERSION: ${{ steps.get_version.outputs.version }}
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        [[ ${LATEST} == "true" ]] && version="latest" || version=${VERSION}
-        docker build -t ${DOCKERHUB_REPOSITORY}:${version} .
-        docker tag ${DOCKERHUB_REPOSITORY}:${version} ${ECR_REGISTRY}/${ECR_REPOSITORY}:${version}
-        docker push ${DOCKERHUB_REPOSITORY}:${version}
-        docker push ${ECR_REGISTRY}/${ECR_REPOSITORY}:${version}
+        docker build -t ${DOCKERHUB_REPOSITORY}:${version}-${{ matrix.arch }} .
+        docker tag ${DOCKERHUB_REPOSITORY}:${version}-${{ matrix.arch }} ${ECR_REGISTRY}/${ECR_REPOSITORY}:${version}-${{ matrix.arch }}
+        docker push ${DOCKERHUB_REPOSITORY}:${version}-${{ matrix.arch }}
+        docker push ${ECR_REGISTRY}/${ECR_REPOSITORY}:${version}-${{ matrix.arch }}
+
+  merge:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Login to Amazon ECR
+      uses: aws-actions/amazon-ecr-login@v1
+      id: login-ecr
+
+    - name: Get the version
+      id: get_version
+      run: echo "version=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+
+    - name: Check if latest
+      id: latest
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: echo "version=latest" >> $GITHUB_ENV
+
+    - name: Tag and push merged image to Docker Hub and ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        docker buildx imagetools create -t ${DOCKERHUB_REPOSITORY}:${version} \
+          ${DOCKERHUB_REPOSITORY}:${version}-amd64 \
+          ${DOCKERHUB_REPOSITORY}:${version}-arm64
+        docker buildx imagetools create -t ${ECR_REGISTRY}/${ECR_REPOSITORY}:${version} \
+          ${ECR_REGISTRY}/${ECR_REPOSITORY}:${version}-amd64 \
+          ${ECR_REGISTRY}/${ECR_REPOSITORY}:${version}-arm64
