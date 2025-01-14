@@ -1,3 +1,6 @@
+* v1.2.0
+	* Updata varnish to 7.6
+
 * v1.1.12
 	* Change default grace preriod [#26](https://github.com/opositatest/varnish-jwt/pull/26)
 
