@@ -77,7 +77,7 @@ Test
 ---
 
 ```
-docker-compose -f docker-compose.test.yml up --abort-on-container-exit
+docker compose -f docker-compose.test.yml up --abort-on-container-exit
 ```
 The test files are in folder ```varnish/test/```:
 * additional_key.vtc
