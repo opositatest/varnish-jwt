@@ -3,6 +3,7 @@ services:
     image: nginx
   varnish:
     build: .
+    image: varnish-jwt
     links:
         - nginx:nginx
     ports:

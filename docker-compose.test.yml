@@ -1,8 +1,9 @@
 services:
   nginx:
     image: nginx:latest
-  sut:
+  varnish:
     build: .
+    image: varnish-jwt
     user: root:root
     command: bash -c 'varnishtest test/*.vtc && bash test/test.sh'
     links:
