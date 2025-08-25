@@ -1,5 +1,8 @@
+* v1.3.0
+	* Update varnish to 7.7  [#29](https://github.com/opositatest/varnish-jwt/pull/29)
+
 * v1.2.0
-	* Updata varnish to 7.6
+	* Update varnish to 7.6  [#28](https://github.com/opositatest/varnish-jwt/pull/28)
 
 * v1.1.12
 	* Change default grace preriod [#26](https://github.com/opositatest/varnish-jwt/pull/26)
