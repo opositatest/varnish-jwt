@@ -77,9 +77,13 @@ Test
 ---
 
 ```
-docker-compose -f docker-compose.test.yml up --abort-on-container-exit
+docker compose -f docker-compose.test.yml up --abort-on-container-exit
 ```
 The test files are in folder ```varnish/test/```:
+* additional_key.vtc
+
+    This test checks that an additional key is working
+
 * autorization.vtc
 
     This test verifies that Varnish is capable of working with JWT. Different content in the token is sent in each test and it is checked if the answer is the expected one.
