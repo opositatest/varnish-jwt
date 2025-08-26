@@ -1,7 +1,5 @@
 FROM debian:bookworm-slim
 
-USER root
-
 ENV VARNISH_PACKAGE_VERSION=7.7.3-1~bookworm
 ENV LIBVMOD_CRYPTO_VERSION=master
 
@@ -39,9 +37,11 @@ RUN export DEBCONF_NOWARNINGS=yes && \
     rm -rf libvmod-crypto* && \
     ldconfig > /dev/null && \
     echo "====CLEAN SYSTEM====" && \
-    apt-get purge -y varnish-dev > /dev/null && \
-    apt-get clean > /dev/null && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get purge -y varnish-dev > /dev/null; \
+    apt-get clean > /dev/null; \
+    rm -rf /var/lib/apt/lists/*; \
+    chown varnish /var/lib/varnish; \
+    mkdir -p -m 1777 /var/lib/varnish/varnishd
 
 COPY /varnish/ /etc/varnish/
 
