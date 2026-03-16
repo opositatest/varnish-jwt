@@ -17,26 +17,31 @@ client c1 {
   txreq -url / \
         -hdr "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlIjoiOkJERTEwMDAzNTE6IiwiZXhwIjoyMDM0NDMyMzYyLCJzdWIiOiJodHRwX3Rlc3QifQ.rsJrHXD0LIH-rt1_kicGb6xAJK0-zLAQ-kRJfAYQNivOcIrpqIugjmmoDm2f-tGjcu5n7PrcYm4HHIN3X_mLZw"
   rxresp
-	expect resp.status == 200
+  expect resp.status == 200
 
   txreq -url / \
         -hdr "Authorization: Bearer"
   rxresp
-	expect resp.status == 401
+  expect resp.status == 401
+  expect resp.body ~ "Missing or empty token"
+
+  txreq -url / \
+        -hdr "Authorization: Bearer "
+  rxresp
+  expect resp.status == 401
   expect resp.body ~ "Missing or empty token"
 
   txreq -url / \
         -hdr "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlIjoiOkJERTEwMDAzNTE6IiwiZXhwIjoyMDM0NDMyMzYyLCJzdWIiOiJodHRwX3Rlc3QifQ.rsJrHXD0LIH-rt1_kicGb6xAJK0-zLAQ-kRJfAYQNivOcIrpqIugjmmoDm2f-tGjcu5n7PrcYm4HHIN3X_aaaa"
   rxresp
-	expect resp.status == 401
+  expect resp.status == 401
   expect resp.body ~ "Signature"
 
   txreq -url / \
         -hdr "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkdTVCJ9.eyJlIjoiOkJERTEwMDAzNTE6IiwiZXhwIjoxMDM0NDMyMzYyLCJzdWIiOiJodHRwX3Rlc3QifQ.bH5l5_YIuOKnBkvFGtAKlAp-T29duAonyGrkUDXQuMqgKH4dnwfLsqC_SASBVUo11nxc6ZBPLU-SH-OuNiQF7Q"
   rxresp
-	expect resp.status == 401
+  expect resp.status == 401
   expect resp.body ~ "not a JWT"
-
 
   txreq -url / \
         -hdr "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlIjoiOkJERTEwMDAzNTE6IiwiZXhwIjoxMDM0NDMyMzYyLCJzdWIiOiJodHRwX3Rlc3QifQ.gftkhKov_KqRaDjmFl6OAavVbbyagmNkCbR7eSO8dtChpa1ygfzGVY12HeCbK7pERPTq8Wsf3G2zMub7swDW-A"
@@ -44,13 +49,10 @@ client c1 {
   expect resp.status == 401
   expect resp.body ~ "Token expired"
 
-
   txreq -url / \
         -hdr "Authorization: Bearer eyJhbGciOiJzUzI1NiIsInR5cCI6IkpXVCJ9.eyJlIjoiOkJERTEwMDAzNTE6IiwiZXhwIjoxMDM0NDMyMzYyLCJzdWIiOiJodHRwX3Rlc3QifQ.gftkhKov_KqRaDjmFl6OAavVbbyagmNkCbR7eSO8dtChpa1ygfzGVY12HeCbK7pERPTq8Wsf3G2zMub7swDW-A"
   rxresp
   expect resp.status == 401
   expect resp.body ~ "RS256 hashing"
-
-
 
 } -run
