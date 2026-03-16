@@ -20,6 +20,12 @@ client c1 {
 	expect resp.status == 200
 
   txreq -url / \
+        -hdr "Authorization: Bearer"
+  rxresp
+	expect resp.status == 401
+  expect resp.body ~ "Missing or empty token"
+
+  txreq -url / \
         -hdr "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlIjoiOkJERTEwMDAzNTE6IiwiZXhwIjoyMDM0NDMyMzYyLCJzdWIiOiJodHRwX3Rlc3QifQ.rsJrHXD0LIH-rt1_kicGb6xAJK0-zLAQ-kRJfAYQNivOcIrpqIugjmmoDm2f-tGjcu5n7PrcYm4HHIN3X_aaaa"
   rxresp
 	expect resp.status == 401
