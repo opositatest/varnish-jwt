@@ -1,7 +1,6 @@
 FROM debian:bookworm-slim
 
 ENV VARNISH_PACKAGE_VERSION=7.7.3-1~bookworm
-ENV LIBVMOD_CRYPTO_VERSION=master
 
 RUN export DEBCONF_NOWARNINGS=yes && \
     echo "====INSTALL BASIC PACKAGES====" && \
@@ -20,13 +19,13 @@ RUN export DEBCONF_NOWARNINGS=yes && \
     libtool \
     python3-docutils \
     libssl-dev \
+    git \
     > /dev/null && \
     echo "====DOWNLOAD VMOD-CRYPTO====" && \
     cd /usr/local/src/ && \
-    curl -sfLO https://code.uplex.de/uplex-varnish/libvmod-crypto/-/archive/${LIBVMOD_CRYPTO_VERSION}/libvmod-crypto-${LIBVMOD_CRYPTO_VERSION}.tar.gz && \
-    tar -xzf libvmod-crypto-${LIBVMOD_CRYPTO_VERSION}.tar.gz && \
+    git clone https://code.uplex.de/uplex-varnish/libvmod-crypto.git && \
     echo "====BOOTSTRAP VMOD-CRYPTO====" && \
-    cd /usr/local/src/libvmod-crypto-${LIBVMOD_CRYPTO_VERSION} && \
+    cd /usr/local/src/libvmod-crypto && \
     ./bootstrap > /dev/null && \
     echo "====CONFIGURE VMOD-CRYPTO====" && \
     ./configure >/dev/null && \
