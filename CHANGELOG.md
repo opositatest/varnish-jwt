@@ -1,45 +1,51 @@
-* v1.3.0
-	* Update varnish to 7.7  [#29](https://github.com/opositatest/varnish-jwt/pull/29)
+- v1.3.2
+  - Return 401 on empty bearer [#31](https://github.com/opositatest/varnish-jwt/pull/31)
 
-* v1.2.0
-	* Update varnish to 7.6  [#28](https://github.com/opositatest/varnish-jwt/pull/28)
+- v1.3.1
+  - Fix create varnishd directory [#30](https://github.com/opositatest/varnish-jwt/pull/30)
 
-* v1.1.12
-	* Change default grace preriod [#26](https://github.com/opositatest/varnish-jwt/pull/26)
+- v1.3.0
+  - Update varnish to 7.7 [#29](https://github.com/opositatest/varnish-jwt/pull/29)
 
-* v1.1.11
-	* fix: pass request to backend if no authorization header is set [#25](https://github.com/opositatest/varnish-jwt/pull/25)
+- v1.2.0
+  - Update varnish to 7.6 [#28](https://github.com/opositatest/varnish-jwt/pull/28)
 
-* v1.1.10
-	* Add Origin header in Vary to solve issues with same requests for different origins
+- v1.1.12
+  - Change default grace preriod [#26](https://github.com/opositatest/varnish-jwt/pull/26)
 
-* v1.0.9
-	* Remove cors manage in Varnish and delegate it to backend web server
+- v1.1.11
+  - fix: pass request to backend if no authorization header is set [#25](https://github.com/opositatest/varnish-jwt/pull/25)
 
-* v1.0.8
-	* Add support to second public key [#21](https://github.com/opositatest/varnish-jwt/pull/21)
+- v1.1.10
+  - Add Origin header in Vary to solve issues with same requests for different origins
 
-* v1.0.7
-	* Fix payload decode [#20](https://github.com/opositatest/varnish-jwt/pull/20)
+- v1.0.9
+  - Remove cors manage in Varnish and delegate it to backend web server
 
-* v1.0.6
-	* Remove libmov-digest dependency [#19](https://github.com/opositatest/varnish-jwt/pull/19)
+- v1.0.8
+  - Add support to second public key [#21](https://github.com/opositatest/varnish-jwt/pull/21)
 
-* v1.0.5
-	* Add environment variable to disable cache [#18](https://github.com/opositatest/varnish-jwt/pull/18)
+- v1.0.7
+  - Fix payload decode [#20](https://github.com/opositatest/varnish-jwt/pull/20)
 
-* v1.0.4
-	* Upgrade Varnish to 6.5.1
+- v1.0.6
+  - Remove libmov-digest dependency [#19](https://github.com/opositatest/varnish-jwt/pull/19)
 
-* v1.0.3
-	* #11 Fix invalid token response when request is restart
+- v1.0.5
+  - Add environment variable to disable cache [#18](https://github.com/opositatest/varnish-jwt/pull/18)
 
-* v1.0.2
-	* #9 Add CORS to public api for all responses.	
+- v1.0.4
+  - Upgrade Varnish to 6.5.1
 
-* v1.0.1
-	* #8 FIX CORS in a non valid jwt request.	
+- v1.0.3
+  - #11 Fix invalid token response when request is restart
 
-* v1.0.0
-	* #5 Fix valid response in jwt errors
-	* #4 Update image Varnish to 6.4 and libvmod_digest to 6.3
+- v1.0.2
+  - #9 Add CORS to public api for all responses.
+
+- v1.0.1
+  - #8 FIX CORS in a non valid jwt request.
+
+- v1.0.0
+  - #5 Fix valid response in jwt errors
+  - #4 Update image Varnish to 6.4 and libvmod_digest to 6.3
