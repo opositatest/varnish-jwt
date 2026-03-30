@@ -38,12 +38,21 @@ sub vcl_recv {
     return (pass);
   }
 
-  if(req.http.Authorization && req.http.Authorization ~ "Bearer ") {
+  if(req.http.Authorization && req.http.Authorization ~ "Bearer") {
+      if (req.http.Authorization == "Bearer") {
+          return (synth(401, "Unauthorized: Missing or empty token"));
+      }
+
       set req.http.x-token =  regsuball(req.http.Authorization, "Bearer ", "");
+      if (!req.http.x-token) {
+          return (synth(401, "Unauthorized: No token found"));
+      }
 
       set req.http.tmpHeader = regsub(req.http.x-token,"([^\.]+)(.*)","\1");
       set req.http.tmpHeaderDecoded = blob.transcode(decoding=BASE64, encoded=req.http.tmpHeader);
-
+      if (!req.http.tmpHeaderDecoded) {
+          return (synth(401, "Unauthorized: No decoded token"));
+      }
 
       set req.http.tmpTyp = regsub(req.http.tmpHeaderDecoded,{"^.*?"typ"\s*:\s*"(\w+)".*?$"},"\1");
       set req.http.tmpAlg = regsub(req.http.tmpHeaderDecoded,{"^.*?"alg"\s*:\s*"(\w+)".*?$"},"\1");
@@ -87,8 +96,6 @@ sub vcl_recv {
       unset req.http.tmpRequestSig;
 
       return (hash);
-  } else {
-    return (synth(401, "Unauthorized: Missing or empty token"));
   }
 }
 

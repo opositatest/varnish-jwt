@@ -1,3 +1,6 @@
+- v1.3.3
+  - Allow pass basic authorization [#32](https://github.com/opositatest/varnish-jwt/pull/32)
+
 - v1.3.2
   - Return 401 on empty bearer [#31](https://github.com/opositatest/varnish-jwt/pull/31)
 

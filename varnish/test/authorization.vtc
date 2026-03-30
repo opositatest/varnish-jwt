@@ -20,6 +20,11 @@ client c1 {
   expect resp.status == 200
 
   txreq -url / \
+        -hdr "Authorization: Basic"
+  rxresp
+  expect resp.status == 200
+
+  txreq -url / \
         -hdr "Authorization: Bearer"
   rxresp
   expect resp.status == 401
