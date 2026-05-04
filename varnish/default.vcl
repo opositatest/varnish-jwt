@@ -35,7 +35,7 @@ sub vcl_recv {
   }
 
   if(!req.http.Authorization) {
-    return (pass);
+    return (hash);
   }
 
   if(req.http.Authorization && req.http.Authorization ~ "Bearer") {
