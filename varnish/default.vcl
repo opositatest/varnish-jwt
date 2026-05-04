@@ -134,7 +134,7 @@ sub vcl_backend_response {
   # Add a small grace time to increase performance
   set beresp.grace = 10s;
 
-  if (beresp.http.Vary) {
+  if (beresp.http.Vary && beresp.http.Vary !~ "Origin") {
     set beresp.http.Vary = beresp.http.Vary + ",Origin";
   } else {
     set beresp.http.Vary = "Origin";
