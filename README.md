@@ -111,7 +111,7 @@ Last-Modified: Tue, 03 Mar 2020 14:32:47 GMT
 ETag: "5e5e6a8f-264"
 X-Varnish: 7 3
 Age: 8
-Via: 1.1 varnish (Varnish/6.4)
+Via: 1.1 varnish (Varnish)
 X-Cache: HIT
 Accept-Ranges: bytes
 Connection: keep-alive
