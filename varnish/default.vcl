@@ -120,6 +120,11 @@ sub vcl_deliver {
   # Comment the following line to send the "Cache-Tags" header to the client (e.g. to use CloudFlare cache tags)
   unset resp.http.Cache-Tags;
 
+  # Remove varnish version
+  if (resp.http.Via) {
+      set resp.http.Via = regsub(resp.http.Via, "Varnish/[0-9\.]+", "Varnish");
+  }
+
   if (obj.hits > 0) {
           set resp.http.X-Cache = "HIT";
   } else {
