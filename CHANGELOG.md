@@ -1,3 +1,6 @@
+- v1.3.4
+  - Remove Varnish version in response [#33](https://github.com/opositatest/varnish-jwt/pull/33)
+
 - v1.3.3
   - Allow pass basic authorization [#32](https://github.com/opositatest/varnish-jwt/pull/32)
 
